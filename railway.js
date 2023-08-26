@@ -8,7 +8,7 @@ function book(id) {
         
         if (front2 === (rear2 + 1) % size) {
             const waitingFullMessage = document.getElementById("waitingFullMessage");
-            waitingFullMessage.textContent = "The waiting queue is full";
+          waitingFullMessage.textContent = "Booking not availabe ,the waiting queue is full";
         } else {
             if (front2 === -1) {
                 front2 = rear2 = 0;
