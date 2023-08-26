@@ -1,11 +1,14 @@
 const size = 5;
-let i, mai = new Array(size), wai = new Array(size), front = -1, rear = -1, front2 = -1, rear2 = -1;
+let mai = new Array(size), wai = new Array(size), front = -1, rear = -1, front2 = -1, rear2 = -1;
 
 function book(id) {
     if (front === (rear + 1) % size) {
-        console.log("\nSorry, the main queue is full. You will be placed in the waiting list.");
+        const waitingMessage = document.getElementById("waitingMessage");
+        waitingMessage.textContent = "Sorry, the main queue is full. You will be placed in the waiting list.";
+        
         if (front2 === (rear2 + 1) % size) {
-            console.log("The waiting queue is full");
+            const waitingFullMessage = document.getElementById("waitingFullMessage");
+            waitingFullMessage.textContent = "The waiting queue is full";
         } else {
             if (front2 === -1) {
                 front2 = rear2 = 0;
@@ -58,56 +61,95 @@ function cancel() {
     }
 }
 
-function display() {
-    console.log("\nThe main queue is: ");
-    if (front <= rear) {
-        process.stdout.write(mai[front] + " ");
-        for (i = front + 1; i <= rear; i++) {
-            process.stdout.write(mai[i] + " ");
-        }
+function getMainQueue() {
+    if (front === -1) {
+        return "Empty";
     } else {
-        for (i = front; i < size; i++) {
-            process.stdout.write(mai[i] + " ");
+        let mainQueue = mai[front].toString();
+        for (let i = (front + 1) % size; i !== (rear + 1) % size; i = (i + 1) % size) {
+            mainQueue += " " + mai[i].toString();
         }
-        for (i = 0; i <= rear; i++) {
-            process.stdout.write(mai[i] + " ");
-        }
+        return mainQueue;
     }
-    console.log();
+}
 
-    console.log("The waiting queue is: ");
-    if (front2 !== -1) {
-        process.stdout.write(wai[front2] + " ");
-        for (i = front2 + 1; i <= rear2; i++) {
-            process.stdout.write(wai[i] + " ");
-        }
+function getWaitingQueue() {
+    if (front2 === -1) {
+        return "Empty";
     } else {
-        console.log("Empty");
+        let waitingQueue = wai[front2].toString();
+        for (let i = (front2 + 1) % size; i !== (rear2 + 1) % size; i = (i + 1) % size) {
+            waitingQueue += " " + wai[i].toString();
+        }
+        return waitingQueue;
     }
-    console.log();
+}
+
+function display() {
+    const mainQueueElement = document.getElementById("mainQueueDisplay");
+    const waitingQueueElement = document.getElementById("waitingQueueDisplay");
+
+    mainQueueElement.textContent = "Main Queue: " + getMainQueue();
+    waitingQueueElement.textContent = "Waiting Queue: " + getWaitingQueue();
 }
 
 function main() {
-    let m, id;
-    do {
-        console.log("\nMenu:\n1. Book\n2. Cancel\n3. Display queues\n4. See first ID\n5. Exit\n");
-        m = parseInt(prompt("Enter your choice:"));
+    const appElement = document.getElementById("app");
 
-        if (m === 1) {
-            id = parseInt(prompt("Enter passenger ID:"));
-            book(id);
-        } else if (m === 2) {
-            cancel();
-        } else if (m === 3) {
-            display();
-        } else if (m === 4) {
-            fir();
-        } else if (m !== 5) {
-            console.log("Invalid option. Please choose a valid option.");
+    const menu = `
+        <div class="container">
+            <h1>Booking System</h1>
+            <div class="menu">
+                <button id="bookBtn">Book</button>
+                <button id="cancelBtn">Cancel</button>
+                <button id="displayBtn">Display Queues</button>
+                <button id="firstBtn">See First ID</button>
+                <button id="exitBtn">Exit</button>
+            </div>
+            <div id="display">
+                <p id="waitingMessage"></p>
+                <p id="waitingFullMessage"></p>
+                <div class="queue">
+                    <p id="mainQueueDisplay">Main Queue: Empty</p>
+                    <p id="waitingQueueDisplay">Waiting Queue: Empty</p>
+                </div>
+            </div>
+        </div>
+    `;
+    appElement.innerHTML = menu;
+
+    const bookBtn = document.getElementById("bookBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const displayBtn = document.getElementById("displayBtn");
+    const firstBtn = document.getElementById("firstBtn");
+    const exitBtn = document.getElementById("exitBtn");
+
+    bookBtn.addEventListener("click", () => {
+        const id = parseInt(prompt("Enter passenger ID:"));
+        book(id);
+        display();
+    });
+
+    cancelBtn.addEventListener("click", () => {
+        const id = parseInt(prompt("Enter passenger ID to cancel:"));
+        if (!isNaN(id)) {
+            cancel(id);
+            updateDisplay();
+        } else {
+            console.log("Invalid passenger ID ! .");    
         }
-    } while (m !== 5);
-
-    console.log("Exiting the program.");
+    });
+    displayBtn.addEventListener("click", () => {
+        display();
+    });
+    
+    firstBtn.addEventListener("click", () => {
+        fir();
+    });
+    
+    exitBtn.addEventListener("click", () => {
+        const displayElement = document.getElementById("display");
+        displayElement.innerHTML = "<p>Thank You for choosing us!</p>";
+    });
 }
-
 main();
