@@ -3,19 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Queue Program</title>
+    <link rel="stylesheet" href="style/railway.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-image: url("images/vandebharat_1.jpeg");
+        body {
+          background-size: cover;
+        }
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+
+        @media (max-width: 768px) {
+          body {
+            background-size: contain;
+          }
+        }
+      }
+    </style>
+    <title>Booking System</title>
   </head>
   <body>
-    <h1>Queue Program</h1>
-    <div>
-      <button onclick="book()">Book</button>
-      <button onclick="cancel()">Cancel</button>
-      <button onclick="display()">Display Queues</button>
-      <button onclick="fir()">See First ID</button>
-      <button onclick="exit()">Exit</button>
-    </div>
-    <div id="output"></div>
-    <script src="railway.js"></script>
+    <div id="app"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script type="text/babel" src="js/railway.js"></script>
   </body>
 </html>
-
