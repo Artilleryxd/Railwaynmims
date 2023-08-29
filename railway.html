@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style/railway.css" />
+    <title>Booking System</title>
+  </head>
+  <body>
     <style>
       body {
         margin: 0;
@@ -22,13 +25,25 @@
         }
       }
     </style>
-    <title>Booking System</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-    <script type="text/babel" src="js/railway.js"></script>
+    <div class="container">
+      <h1>Booking System</h1>
+      <div class="menu">
+        <button id="bookBtn">Book</button>
+        <button id="cancelBtn">Cancel</button>
+        <button id="displayBtn">Display Queues</button>
+        <button id="firstBtn">See First ID</button>
+        <button id="exitBtn">Exit</button>
+      </div>
+      <div id="display">
+        <p id="waitingMessage"></p>
+        <p id="waitingFullMessage"></p>
+        <div class="queue">
+          <p id="mainQueueDisplay">Main Queue: Empty</p>
+          <p id="waitingQueueDisplay">Waiting Queue: Empty</p>
+        </div>
+      </div>
+    </div>
+    <script src="js/railway.js"></script>
+    <!-- Replace with the path to your JavaScript file -->
   </body>
 </html>
