@@ -1,5 +1,5 @@
 #include <iostream>
-#define size 5
+const int size =5;
 using namespace std;
 int i, mai[size], wai[size], front = -1, rear = -1, front2 = -1, rear2 = -1,ind=-1;
 void book(int id) {
