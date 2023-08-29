@@ -79,6 +79,9 @@ void del(int id){
     if(ind==-1){
         cout<<"\nInvalid id please enter a valid id"<<endl;
 }
+else{
+    cout<<ind<<endl;
+}
 }
 void display() {
     cout << "The main queue is: " << endl;
@@ -113,7 +116,7 @@ void display() {
             }
         }
     }
-    cout <<ind<<endl;
+    cout << endl;
 }
 
 int main() {
