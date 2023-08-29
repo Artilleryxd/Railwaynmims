@@ -37,7 +37,7 @@ void fir(){
 }
 void cancel() {
     if (front == -1) {
-        cout << "No booking to cancel" << endl;
+        cout << "No ID to recieve ticket" << endl;
     }
     else {
         if (front == rear) {
@@ -55,6 +55,7 @@ void cancel() {
     }
 }
 void del(int id){
+    if(front!=-1){
     cout<<"Enter the id you want to delete"<<endl;
     cin>>id;
     if(front<rear){
@@ -79,9 +80,39 @@ void del(int id){
     if(ind==-1){
         cout<<"\nInvalid id please enter a valid id"<<endl;
 }
-else{
-    cout<<ind<<endl;
+if(front<rear){
+    for(i=ind;i<=rear;i++){
+        mai[i]=mai[(i+1)%size];
+    }
+    if(front2!=-1){
+        mai[rear]=wai[front2];
+        front2++;
+    }
+    else{
+        rear--;
+    }
 }
+else{
+    if(ind>front){
+        for(i=ind;i<size;i++){
+            mai[i]=mai[(i+1)%size];
+        }
+        for(i=0;i<=rear;i++){
+            mai[i]=mai[(i+1)%size];
+        }
+        if(front2!=-1){
+            mai[rear]=wai[front2];
+            front++;
+        }
+        else{
+            rear--;
+        }
+    }
+}
+    }
+    else{
+        cout<<"No bookings to cancel"<<endl;
+    }
 }
 void display() {
     cout << "The main queue is: " << endl;
@@ -122,7 +153,7 @@ void display() {
 int main() {
     int m, id;
     do {
-        cout << "\n1 to book\n2 to cancel\n3 to display\n4 to see first ID\n5 to delete\n6 to exit" << endl;
+        cout << "\n1 to book\n2 if ticket recieved\n3 to display\n4 to see first ID\n5 to cancel\n6 to exit" << endl;
         cin >> m;
         if (m == 1) {
             cout << "Enter passenger ID: ";
