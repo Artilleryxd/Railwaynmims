@@ -1,14 +1,11 @@
 const size = 5;
-let mai = new Array(size), wai = new Array(size), front = -1, rear = -1, front2 = -1, rear2 = -1;
+let i, mai = new Array(size), wai = new Array(size), front = -1, rear = -1, front2 = -1, rear2 = -1, ind = -1;
 
 function book(id) {
     if (front === (rear + 1) % size) {
-        const waitingMessage = document.getElementById("waitingMessage");
-        waitingMessage.textContent = "Sorry, the main queue is full. You will be placed in the waiting list.";
-        
+        console.log("The main queue is full, You will be placed in the waiting list");
         if (front2 === (rear2 + 1) % size) {
-            const waitingFullMessage = document.getElementById("waitingFullMessage");
-          waitingFullMessage.textContent = "Booking not availabe ,the waiting queue is full";
+            console.log("The waiting queue is full");
         } else {
             if (front2 === -1) {
                 front2 = rear2 = 0;
@@ -30,21 +27,13 @@ function book(id) {
 }
 
 function fir() {
-    if (front === -1) {
-        console.log("No bookings yet.");
-    } else {
-        console.log("\nThe first person to get the ticket is: " + mai[front]);
-        if (front2 === -1) {
-            console.log("No one in the waiting list.");
-        } else {
-            console.log("The first person in the waiting list is: " + wai[front2]);
-        }
-    }
+    console.log("The first person to get the ticket is: " + mai[front]);
+    console.log("The first person of the waiting list is: " + wai[front2]);
 }
 
 function cancel() {
     if (front === -1) {
-        console.log("\nNo booking to cancel.");
+        console.log("No booking to cancel");
     } else {
         if (front === rear) {
             front = rear = -1;
@@ -57,99 +46,131 @@ function cancel() {
             rear = (rear + 1) % size;
             front2 = (front2 + 1) % size;
         }
-        console.log("\nBooking canceled successfully.");
     }
 }
 
-function getMainQueue() {
-    if (front === -1) {
-        return "Empty";
-    } else {
-        let mainQueue = mai[front].toString();
-        for (let i = (front + 1) % size; i !== (rear + 1) % size; i = (i + 1) % size) {
-            mainQueue += " " + mai[i].toString();
-        }
-        return mainQueue;
-    }
-}
+function del(id) {
+    console.log("Enter the ID you want to delete");
+    // Assuming you have some way to get user input in JavaScript
+    id = parseInt(/* user input here */);
 
-function getWaitingQueue() {
-    if (front2 === -1) {
-        return "Empty";
-    } else {
-        let waitingQueue = wai[front2].toString();
-        for (let i = (front2 + 1) % size; i !== (rear2 + 1) % size; i = (i + 1) % size) {
-            waitingQueue += " " + wai[i].toString();
+    let found = false;
+
+    // Search for the ID in the main queue
+    if (front <= rear) {
+        for (i = front; i <= rear; i++) {
+            if (mai[i] === id) {
+                found = true;
+                ind = i;
+                break;
+            }
         }
-        return waitingQueue;
+    } else {
+        for (i = front; i <= size - 1; i++) {
+            if (mai[i] === id) {
+                found = true;
+                ind = i;
+                break;
+            }
+        }
+        for (i = 0; i <= rear; i++) {
+            if (mai[i] === id) {
+                found = true;
+                ind = i;
+                break;
+            }
+        }
+    }
+
+    if (found) {
+        if (front <= rear) {
+            for (i = ind; i <= rear; i++) {
+                mai[i] = mai[(i + 1) % size];
+            }
+            if (front2 !== -1) {
+                mai[rear] = wai[front2];
+                front2++;
+            } else {
+                rear--;
+            }
+        } else {
+            if (ind > front) {
+                for (i = ind; i < size; i++) {
+                    mai[i] = mai[(i + 1) % size];
+                }
+                for (i = 0; i <= rear; i++) {
+                    mai[i] = mai[(i + 1) % size];
+                }
+                if (front2 !== -1) {
+                    mai[rear] = wai[front2];
+                    front++;
+                } else {
+                    rear--;
+                }
+            }
+        }
+        console.log("ID deleted successfully.");
+    } else {
+        console.log("Invalid ID. Please enter a valid ID.");
     }
 }
 
 function display() {
-    const mainQueueElement = document.getElementById("mainQueueDisplay");
-    const waitingQueueElement = document.getElementById("waitingQueueDisplay");
+    console.log("The main queue is: ");
+    if (front <= rear) {
+        for (i = front; i <= rear; i++) {
+            console.log(mai[i] + " ");
+        }
+    } else {
+        for (i = front; i < size; i++) {
+            console.log(mai[i] + " ");
+        }
+        for (i = 0; i <= rear; i++) {
+            console.log(mai[i] + " ");
+        }
+    }
 
-    mainQueueElement.textContent = "Main Queue: " + getMainQueue();
-    waitingQueueElement.textContent = "Waiting Queue: " + getWaitingQueue();
+    console.log("The waiting queue is: ");
+    if (front2 !== -1) {
+        if (front2 <= rear2) {
+            for (i = front2; i <= rear2; i++) {
+                console.log(wai[i] + " ");
+            }
+        } else {
+            for (i = front2; i < size; i++) {
+                console.log(wai[i] + " ");
+            }
+            for (i = 0; i <= rear2; i++) {
+                console.log(wai[i] + " ");
+            }
+        }
+    }
 }
 
 function main() {
-    const appElement = document.getElementById("app");
-
-    const menu = `
-        <div class="container">
-            <h1>Booking System</h1>
-            <div class="menu">
-                <button id="bookBtn">Book</button>
-                <button id="cancelBtn">Cancel</button>
-                <button id="displayBtn">Display Queues</button>
-                <button id="firstBtn">See First ID</button>
-                <button id="exitBtn">Exit</button>
-            </div>
-            <div id="display">
-                <p id="waitingMessage"></p>
-                <p id="waitingFullMessage"></p>
-                <div class="queue">
-                    <p id="mainQueueDisplay">Main Queue: Empty</p>
-                    <p id="waitingQueueDisplay">Waiting Queue: Empty</p>
-                </div>
-            </div>
-        </div>
-    `;
-    appElement.innerHTML = menu;
-
-    const bookBtn = document.getElementById("bookBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
-    const displayBtn = document.getElementById("displayBtn");
-    const firstBtn = document.getElementById("firstBtn");
-    const exitBtn = document.getElementById("exitBtn");
-
-    bookBtn.addEventListener("click", () => {
-        const id = parseInt(prompt("Enter passenger ID:"));
-        book(id);
-        display();
-    });
-
-    cancelBtn.addEventListener("click", () => {
-        const id = parseInt(prompt("Enter passenger ID to cancel:"));
-        if (!isNaN(id)) {
-            cancel(id);
-            updateDisplay();
-        } else {
-            console.log("Invalid passenger ID ! .");    
+    let m, id;
+    do {
+        console.log("\n1 to book\n2 to cancel\n3 to display\n4 to see first ID\n5 to delete\n6 to exit");
+        // Assuming you have some way to get user input in JavaScript
+        m = parseInt(/* user input here */);
+        
+        if (m === 1) {
+            console.log("Enter passenger ID: ");
+            // Assuming you have some way to get user input in JavaScript
+            id = parseInt(/* user input here */);
+            book(id);
+        } else if (m === 2) {
+            cancel();
+        } else if (m === 3) {
+            display();
+        } else if (m === 4) {
+            fir();
+        } else if (m === 5) {
+            del(id);
+        } else if (m !== 6) {
+            console.log("Invalid option. Please choose a valid option.");
         }
-    });
-    displayBtn.addEventListener("click", () => {
-        display();
-    });
-    
-    firstBtn.addEventListener("click", () => {
-        fir();
-    });
-    
-    exitBtn.addEventListener("click", () => {
-        const displayElement = document.getElementById("display");
-        displayElement.innerHTML = "<p>Thank You for choosing us!</p>";
-    });
+    } while (m !== 6);
 }
+
 main();
